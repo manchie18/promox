@@ -2,164 +2,55 @@
 # ---
 # Create a new VM from a clone
 
+variable "vm_count" {
+  type = number
+  default = 3
+}
+
 resource "proxmox_vm_qemu" "rhel9-vm" {
-    
-    # VM General Settings
-    target_node = "homelab"
-    desc = "RHEL9 Server"
+  count = var.vm_count
 
-    # VM Advanced General Settings
-    onboot = true 
+  # VM General Settings
+  target_node = "homelab"
+  desc = "RHEL9 Server ${count.index + 1}" 
 
-    # VM OS Settings
-    clone = "RHEL9"
+  # VM Advanced General Settings
+  onboot = true
 
-    # VM System Settings
-    agent = 1
-    
-    # VM CPU Settings
-    cores = 1
-    sockets = 1
-    cpu = "host"    
-    
-    # VM Memory Settings
-    memory = 2048
+  # VM OS Settings
+  clone = "rhel9"
 
-    # VM Network Settings
-    network {
-        bridge = "vmbr0"
-        model  = "virtio"
-        
-    }
+  # VM System Settings
+  agent = 1
 
-    # VM Cloud-Init Settings
-    os_type = "cloud-init"
-    ciuser = "Charlie"
-    ipconfig0 = "dhcp"
-    
-    
-    # Disk settings
-    disk {
+  # VM CPU Settings
+  cores = 1
+  sockets = 1
+  cpu = "host"
 
-        storage = "local-lvm"
-        type = "virtio"
-        size = "10G"
-    }
+  # VM Memory Settings
+  memory = 2048
 
-    
-    # (Optional) Add your SSH KEY
-    # sshkeys = <<EOF
-    # #YOUR-PUBLIC-SSH-KEY
-    # EOF
-}
+  # VM Network Settings
+  network {
+    bridge = "vmbr0"
+    model = "virtio"
+  }
 
-# Proxmox Full-Clone
-# ---
-# Create a new VM from a clone
+  # VM Cloud-Init Settings
+  os_type = "cloud-init"
+  ciuser = "Charlie"
+  ipconfig0 = "dhcp"
 
-resource "proxmox_vm_qemu" "Nessus" {
-    
-    # VM General Settings
-    target_node = "homelab"
-    desc = "Nessus Scanner"
+  # Disk settings
+  disk {
+    storage = "local-lvm"
+    type = "virtio"
+    size = "10G"
+  }
 
-    # VM Advanced General Settings
-    onboot = true 
-
-    # VM OS Settings
-    clone = "Nessus"
-
-    # VM System Settings
-    agent = 1
-    
-    # VM CPU Settings
-    cores = 1
-    sockets = 1
-    cpu = "host"    
-    
-    # VM Memory Settings
-    memory = 2048
-
-    # VM Network Settings
-    network {
-        bridge = "vmbr0"
-        model  = "virtio"
-        
-    }
-
-    # VM Cloud-Init Settings
-    os_type = "cloud-init"
-    ciuser = "Charlie"
-    ipconfig0 = "dhcp"
-    
-    
-    # Disk settings
-    disk {
-
-        storage = "local-lvm"
-        type = "virtio"
-        size = "10G"
-    }
-
-    
-    # (Optional) Add your SSH KEY
-    # sshkeys = <<EOF
-    # #YOUR-PUBLIC-SSH-KEY
-    # EOF
-}
-
-
-# Proxmox Full-Clone
-# ---
-# Create a new VM from a clone
-
-resource "proxmox_vm_qemu" "Webserver" {
-    
-    # VM General Settings
-    target_node = "homelab"
-    desc = "Production Webserver"
-
-    # VM Advanced General Settings
-    onboot = true 
-
-    # VM OS Settings
-    clone = "Webserver"
-
-    # VM System Settings
-    agent = 1
-    
-    # VM CPU Settings
-    cores = 1
-    sockets = 1
-    cpu = "host"    
-    
-    # VM Memory Settings
-    memory = 2048
-
-    # VM Network Settings
-    network {
-        bridge = "vmbr0"
-        model  = "virtio"
-        
-    }
-
-    # VM Cloud-Init Settings
-    os_type = "cloud-init"
-    ciuser = "Charlie"
-    ipconfig0 = "dhcp"
-    
-    
-    # Disk settings
-    disk {
-
-        storage = "local-lvm"
-        type = "virtio"
-        size = "10G"
-    }
-
-    
-    # (Optional) Add your SSH KEY
-    # sshkeys = <<EOF
-    # #YOUR-PUBLIC-SSH-KEY
-    # EOF
+  # (Optional) Add your SSH KEY
+  # sshkeys = <<EOF
+  # #YOUR-PUBLIC-SSH-KEY
+  # EOF
 }
